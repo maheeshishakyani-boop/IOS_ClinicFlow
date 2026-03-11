@@ -1,3 +1,6 @@
+
+
+
 import SwiftUI
 
 struct TrackMyQueueView: View {
@@ -6,9 +9,9 @@ struct TrackMyQueueView: View {
     @State private var estimatedWaitMinutes = 15
     @State private var estimatedConsultationTime = "10:35 AM"
     
-    // Static queue - shows tokens 38 through 49 (12 tokens)
-    private let visibleQueueStart = 38
-    private let queueLength = 12
+    // Static queue showing tokens 41 through 46
+    private let visibleQueueStart = 41
+    private let queueLength = 6
     
     var queueTokens: [Int] {
         Array(visibleQueueStart...(visibleQueueStart + queueLength - 1))
@@ -97,7 +100,7 @@ struct TrackMyQueueView: View {
                             }
                         }
                         
-                        // Queue List – Static view with your token highlighted
+                        // Queue List – 41 at top as current, 45 as your token, 46 at bottom
                         VStack(spacing: 12) {
                             ForEach(queueTokens, id: \.self) { token in
                                 QueueRow(
@@ -185,45 +188,5 @@ struct QueueRow: View {
 #Preview {
     NavigationStack {
         TrackMyQueueView()
-    }
-}//
-//  ClinicAppUITests.swift
-//  ClinicAppUITests
-//
-//  Created by BSCComp-046 on 2026-03-03.
-//
-
-import XCTest
-
-final class ClinicAppUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
     }
 }
