@@ -1,187 +1,588 @@
-
-
+//
+//
+//import SwiftUI
+//
+//// MARK: - TrackMyQueueView
+//
+//struct TrackMyQueueView: View {
+//
+//    @State private var yourToken = 45
+//    @State private var currentServing = 41
+//    @State private var estimatedWaitMinutes = 15
+//    @State private var estimatedConsultationTime = "10:35 AM"
+//
+//    private let visibleQueueStart = 41
+//    private let queueLength = 6
+//
+//    var queueTokens: [Int] {
+//        Array(visibleQueueStart...(visibleQueueStart + queueLength - 1))
+//    }
+//
+//    var body: some View {
+//        ScrollView {
+//            VStack(alignment: .leading, spacing: 20) {
+//
+//                // ── Hero Token Card ───────────────────────────────────────────
+//                VStack(spacing: 6) {
+//                    Text("Your Token Number")
+//                        .font(.subheadline)
+//                        .foregroundStyle(.secondary)
+//                    Text("OPD – \(yourToken)")
+//                        .font(.system(size: 48, weight: .bold))
+//                        .foregroundStyle(.primary)
+//                }
+//                .frame(maxWidth: .infinity)
+//                .padding(.vertical, 32)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 16)
+//                        .fill(Color(.systemBackground))
+//                        .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+//                )
+//
+//                // ── Wait Time & Consultation ──────────────────────────────────
+//                HStack(spacing: 0) {
+//                    VStack(spacing: 4) {
+//                        Text("\(estimatedWaitMinutes) min")
+//                            .font(.title3)
+//                            .fontWeight(.bold)
+//                            .foregroundStyle(.primary)
+//                        Text("Est. Waiting Time")
+//                            .font(.caption)
+//                            .foregroundStyle(.secondary)
+//                    }
+//                    .frame(maxWidth: .infinity)
+//
+//                    Rectangle()
+//                        .fill(Color(.separator))
+//                        .frame(width: 1, height: 40)
+//
+//                    VStack(spacing: 4) {
+//                        Text(estimatedConsultationTime)
+//                            .font(.title3)
+//                            .fontWeight(.bold)
+//                            .foregroundStyle(.primary)
+//                        Text("Est. Consult Time")
+//                            .font(.caption)
+//                            .foregroundStyle(.secondary)
+//                    }
+//                    .frame(maxWidth: .infinity)
+//                }
+//                .padding(.vertical, 20)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 16)
+//                        .fill(Color(.systemBackground))
+//                        .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+//                )
+//
+//                // ── Live Queue ────────────────────────────────────────────────
+//                VStack(alignment: .leading, spacing: 14) {
+//
+//                    // Section header
+//                    HStack {
+//                        Text("Live Queue")
+//                            .font(.headline)
+//                            .fontWeight(.semibold)
+//                            .foregroundStyle(.primary)
+//                        Spacer()
+//                        HStack(spacing: 5) {
+//                            Circle()
+//                                .fill(Color.green)
+//                                .frame(width: 7, height: 7)
+//                            Text("Updating Live")
+//                                .font(.caption)
+//                                .foregroundStyle(.secondary)
+//                        }
+//                    }
+//
+//                    // Queue rows inside one card
+//                    VStack(spacing: 0) {
+//                        ForEach(Array(queueTokens.enumerated()), id: \.element) { index, token in
+//                            QueueRow(
+//                                token: token,
+//                                isCurrent: token == currentServing,
+//                                isNext: token == currentServing + 1,
+//                                isYours: token == yourToken
+//                            )
+//                            if index < queueTokens.count - 1 {
+//                                Divider()
+//                                    .padding(.leading, 16)
+//                            }
+//                        }
+//                    }
+//                    .background(
+//                        RoundedRectangle(cornerRadius: 16)
+//                            .fill(Color(.systemBackground))
+//                            .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+//                    )
+//                }
+//            }
+//            .padding(.horizontal, 20)
+//            .padding(.top, 12)
+//            .padding(.bottom, 40)
+//        }
+//        .background(Color(.systemGroupedBackground))
+//        .navigationTitle("Queue Tracking")
+//        .navigationBarTitleDisplayMode(.large)
+//    }
+//}
+//
+//// MARK: - QueueRow
+//
+//struct QueueRow: View {
+//    let token: Int
+//    let isCurrent: Bool
+//    let isNext: Bool
+//    let isYours: Bool
+//
+//    var body: some View {
+//        HStack(spacing: 0) {
+//            Text("OPD – \(token)")
+//                .font(.subheadline)
+//                .fontWeight(isCurrent || isYours ? .semibold : .regular)
+//                .foregroundStyle(isYours ? .blue : .primary)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//
+//            statusBadge
+//        }
+//        .padding(.horizontal, 16)
+//        .padding(.vertical, 14)
+//        .background(isYours ? Color.blue.opacity(0.05) : Color.clear)
+//    }
+//
+//    @ViewBuilder
+//    private var statusBadge: some View {
+//        if isCurrent {
+//            Text("Serving")
+//                .font(.caption)
+//                .fontWeight(.medium)
+//                .foregroundStyle(.green)
+//                .padding(.horizontal, 10)
+//                .padding(.vertical, 4)
+//                .background(
+//                    Capsule().fill(Color.green.opacity(0.12))
+//                )
+//        } else if isNext {
+//            Text("Next")
+//                .font(.caption)
+//                .fontWeight(.medium)
+//                .foregroundStyle(.secondary)
+//                .padding(.horizontal, 10)
+//                .padding(.vertical, 4)
+//                .background(
+//                    Capsule().fill(Color(.secondarySystemBackground))
+//                )
+//        } else if isYours {
+//            Text("Your Token")
+//                .font(.caption)
+//                .fontWeight(.medium)
+//                .foregroundStyle(.blue)
+//                .padding(.horizontal, 10)
+//                .padding(.vertical, 4)
+//                .background(
+//                    Capsule().fill(Color.blue.opacity(0.1))
+//                )
+//        } else {
+//            Text("Waiting")
+//                .font(.caption)
+//                .foregroundStyle(.secondary)
+//        }
+//    }
+//}
+//
+//#Preview {
+//    NavigationStack {
+//        TrackMyQueueView()
+//    }
+////}
+//
+//
+//import SwiftUI
+//
+//// MARK: - TrackMyQueueView
+//
+//struct TrackMyQueueView: View {
+//
+//    @State private var yourToken = 45
+//    @State private var currentServing = 41
+//    @State private var estimatedWaitMinutes = 15
+//    @State private var estimatedConsultationTime = "10:35 AM"
+//
+//    private let visibleQueueStart = 41
+//    private let queueLength = 6
+//
+//    var queueTokens: [Int] {
+//        Array(visibleQueueStart...(visibleQueueStart + queueLength - 1))
+//    }
+//
+//    var body: some View {
+//        ScrollView {
+//            VStack(alignment: .leading, spacing: 20) {
+//
+//                // ── Hero Token Card ───────────────────────────────────────────
+//                VStack(spacing: 8) {
+//                    Text("Your Token Number")
+//                        .font(.subheadline)
+//                        .foregroundStyle(.secondary)
+//
+//                    // "OPD –" blue, number primary — creates visual accent without noise
+//                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+//                        Text("OPD –")
+//                            .font(.system(size: 28, weight: .semibold))
+//                            .foregroundStyle(.blue)
+//                        Text("\(yourToken)")
+//                            .font(.system(size: 52, weight: .bold))
+//                            .foregroundStyle(.primary)
+//                    }
+//                }
+//                .frame(maxWidth: .infinity)
+//                .padding(.vertical, 32)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 16)
+//                        .fill(Color(.systemBackground))
+//                        .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+//                )
+//
+//                // ── Wait Time & Consultation ──────────────────────────────────
+//                HStack(spacing: 0) {
+//                    VStack(spacing: 4) {
+//                        Text("\(estimatedWaitMinutes) min")
+//                            .font(.title3)
+//                            .fontWeight(.bold)
+//                            .foregroundStyle(.primary)
+//                        Text("Est. Waiting Time")
+//                            .font(.caption)
+//                            .foregroundStyle(.secondary)
+//                    }
+//                    .frame(maxWidth: .infinity)
+//
+//                    Rectangle()
+//                        .fill(Color(.separator))
+//                        .frame(width: 1, height: 40)
+//
+//                    VStack(spacing: 4) {
+//                        Text(estimatedConsultationTime)
+//                            .font(.title3)
+//                            .fontWeight(.bold)
+//                            .foregroundStyle(.primary)
+//                        Text("Est. Consult Time")
+//                            .font(.caption)
+//                            .foregroundStyle(.secondary)
+//                    }
+//                    .frame(maxWidth: .infinity)
+//                }
+//                .padding(.vertical, 20)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 16)
+//                        .fill(Color(.systemBackground))
+//                        .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+//                )
+//
+//                // ── Live Queue ────────────────────────────────────────────────
+//                VStack(alignment: .leading, spacing: 14) {
+//
+//                    HStack {
+//                        Text("Live Queue")
+//                            .font(.headline)
+//                            .fontWeight(.semibold)
+//                            .foregroundStyle(.primary)
+//                        Spacer()
+//                        HStack(spacing: 5) {
+//                            Circle()
+//                                .fill(Color.green)
+//                                .frame(width: 7, height: 7)
+//                            Text("Updating Live")
+//                                .font(.caption)
+//                                .foregroundStyle(.secondary)
+//                        }
+//                    }
+//
+//                    VStack(spacing: 0) {
+//                        ForEach(Array(queueTokens.enumerated()), id: \.element) { index, token in
+//                            QueueRow(
+//                                token: token,
+//                                isCurrent: token == currentServing,
+//                                isNext: token == currentServing + 1,
+//                                isYours: token == yourToken
+//                            )
+//                            if index < queueTokens.count - 1 {
+//                                Divider().padding(.leading, 16)
+//                            }
+//                        }
+//                    }
+//                    .background(
+//                        RoundedRectangle(cornerRadius: 16)
+//                            .fill(Color(.systemBackground))
+//                            .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+//                    )
+//                }
+//            }
+//            .padding(.horizontal, 20)
+//            .padding(.top, 12)
+//            .padding(.bottom, 40)
+//        }
+//        .background(Color(.systemGroupedBackground))
+//        .navigationTitle("Queue Tracking")
+//        .navigationBarTitleDisplayMode(.large)
+//    }
+//}
+//
+//// MARK: - QueueRow
+//
+//struct QueueRow: View {
+//    let token: Int
+//    let isCurrent: Bool
+//    let isNext: Bool
+//    let isYours: Bool
+//
+//    var body: some View {
+//        HStack(spacing: 0) {
+//            // Plain token label — no colour variance in the list
+//            Text("OPD – \(token)")
+//                .font(.subheadline)
+//                .fontWeight(isCurrent || isYours ? .semibold : .regular)
+//                .foregroundStyle(.primary)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//
+//            statusBadge
+//        }
+//        .padding(.horizontal, 16)
+//        .padding(.vertical, 14)
+//        .background(isYours ? Color.blue.opacity(0.05) : Color.clear)
+//    }
+//
+//    @ViewBuilder
+//    private var statusBadge: some View {
+//        if isCurrent {
+//            Text("Serving")
+//                .font(.caption)
+//                .fontWeight(.medium)
+//                .foregroundStyle(.green)
+//                .padding(.horizontal, 10)
+//                .padding(.vertical, 4)
+//                .background(Capsule().fill(Color.green.opacity(0.12)))
+//        } else if isNext {
+//            Text("Next")
+//                .font(.caption)
+//                .fontWeight(.medium)
+//                .foregroundStyle(.secondary)
+//                .padding(.horizontal, 10)
+//                .padding(.vertical, 4)
+//                .background(Capsule().fill(Color(.secondarySystemBackground)))
+//        } else if isYours {
+//            Text("Your Token")
+//                .font(.caption)
+//                .fontWeight(.medium)
+//                .foregroundStyle(.blue)
+//                .padding(.horizontal, 10)
+//                .padding(.vertical, 4)
+//                .background(Capsule().fill(Color.blue.opacity(0.1)))
+//        } else {
+//            Text("Waiting")
+//                .font(.caption)
+//                .foregroundStyle(.secondary)
+//        }
+//    }
+//}
+//
+//#Preview {
+//    NavigationStack {
+//        TrackMyQueueView()
+//    }
+//}
 
 import SwiftUI
 
+// MARK: - TrackMyQueueView
+
 struct TrackMyQueueView: View {
+
     @State private var yourToken = 45
     @State private var currentServing = 41
     @State private var estimatedWaitMinutes = 15
     @State private var estimatedConsultationTime = "10:35 AM"
-    
-    // Static queue showing tokens 41 through 46
+
     private let visibleQueueStart = 41
     private let queueLength = 6
-    
+
     var queueTokens: [Int] {
         Array(visibleQueueStart...(visibleQueueStart + queueLength - 1))
     }
-    
+
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 28) {
-                    
-                    // Hero Token Card
-                    VStack(spacing: 8) {
-                        Text("YOUR TOKEN NUMBER")
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+
+                // ── Hero Token Card ─────────────────────────
+                VStack(spacing: 8) {
+
+                    Text("Your Token Number")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+
+                    // SAME SIZE + SAME COLOR
+                    Text("OPD – \(yourToken)")
+                        .font(.system(size: 52, weight: .bold))
+                        .foregroundStyle(.blue)
+
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 32)
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color(.systemBackground))
+                        .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+                )
+
+                // ── Wait Time & Consultation ───────────────
+                HStack(spacing: 0) {
+
+                    VStack(spacing: 4) {
+                        Text("\(estimatedWaitMinutes) min")
+                            .font(.title3)
+                            .fontWeight(.bold)
+
+                        Text("Est. Waiting Time")
                             .font(.caption)
-                            .fontWeight(.semibold)
                             .foregroundStyle(.secondary)
-                            .tracking(1)
-                        
-                        Text("OPD - \(yourToken)")
-                            .font(.system(size: 56, weight: .bold, design: .rounded))
-                            .foregroundStyle(.blue)
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 36)
-                    .background(
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(Color(.systemBackground))
-                            .shadow(color: .black.opacity(0.07), radius: 20, y: 8)
-                    )
-                    
-                    // Wait + Consult Time (side by side)
-                    HStack(spacing: 0) {
-                        VStack(spacing: 8) {
-                            Image(systemName: "clock.fill")
-                                .font(.title2)
-                                .foregroundStyle(.blue)
-                            Text("\(estimatedWaitMinutes) Mins")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                            Text("Est. Waiting Time")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        .frame(maxWidth: .infinity)
-                        
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.18))
-                            .frame(width: 1, height: 80)
-                        
-                        VStack(spacing: 8) {
-                            Image(systemName: "calendar")
-                                .font(.title2)
-                                .foregroundStyle(.blue)
-                            Text(estimatedConsultationTime)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                            Text("Est. Consult Time")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        .frame(maxWidth: .infinity)
+
+                    Rectangle()
+                        .fill(Color(.separator))
+                        .frame(width: 1, height: 40)
+
+                    VStack(spacing: 4) {
+                        Text(estimatedConsultationTime)
+                            .font(.title3)
+                            .fontWeight(.bold)
+
+                        Text("Est. Consult Time")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
-                    .padding(24)
-                    .background(
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(Color(.systemBackground))
-                            .shadow(color: .black.opacity(0.07), radius: 20, y: 8)
-                    )
-                    
-                    // LIVE QUEUE SECTION
-                    VStack(alignment: .leading, spacing: 16) {
-                        HStack {
-                            Text("LIVE QUEUE")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                            
-                            Spacer()
-                            
-                            HStack(spacing: 6) {
-                                Circle()
-                                    .fill(Color.green)
-                                    .frame(width: 8, height: 8)
-                                Text("Updating Live")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        
-                        // Queue List – 41 at top as current, 45 as your token, 46 at bottom
-                        VStack(spacing: 12) {
-                            ForEach(queueTokens, id: \.self) { token in
-                                QueueRow(
-                                    token: token,
-                                    isCurrent: token == currentServing,
-                                    isNext: token == currentServing + 1,
-                                    isYours: token == yourToken
-                                )
-                            }
-                        }
-                    }
+                    .frame(maxWidth: .infinity)
                 }
-                .padding(20)
+                .padding(.vertical, 20)
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color(.systemBackground))
+                        .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+                )
+
+                // ── Live Queue ─────────────────────────────
+                VStack(alignment: .leading, spacing: 14) {
+
+                    HStack {
+                        Text("Live Queue")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+
+                        Spacer()
+
+                        HStack(spacing: 5) {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 7, height: 7)
+
+                            Text("Updating Live")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    VStack(spacing: 0) {
+                        ForEach(Array(queueTokens.enumerated()), id: \.element) { index, token in
+                            QueueRow(
+                                token: token,
+                                isCurrent: token == currentServing,
+                                isNext: token == currentServing + 1,
+                                isYours: token == yourToken
+                            )
+
+                            if index < queueTokens.count - 1 {
+                                Divider().padding(.leading, 16)
+                            }
+                        }
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color(.systemBackground))
+                            .shadow(color: .black.opacity(0.05), radius: 12, y: 4)
+                    )
+                }
             }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("Queue Tracking")
-            .navigationBarTitleDisplayMode(.large)
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 40)
         }
+        .background(Color(.systemGroupedBackground))
+        .navigationTitle("Queue Tracking")
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
-// MARK: - Queue Row Component
+// MARK: - QueueRow
+
 struct QueueRow: View {
     let token: Int
     let isCurrent: Bool
     let isNext: Bool
     let isYours: Bool
-    
+
     var body: some View {
-        HStack {
-            Text("OPD - \(token)")
-                .font(.title3)
-                .fontWeight(isYours ? .bold : .semibold)
-                .foregroundStyle(isYours ? .blue : .primary)
-            
-            Spacer()
-            
-            if isCurrent {
-                Text("Currently Serving")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(Capsule().fill(Color.green.opacity(0.18)))
-                    .foregroundStyle(.green)
-            } else if isNext {
-                Text("Next")
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .foregroundStyle(.orange)
-            } else if isYours {
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("Your Turn Soon")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Capsule().fill(Color.blue))
-                        .foregroundStyle(.white)
-                    
-                    Text("Your token is here")
-                        .font(.caption2)
-                        .foregroundStyle(.blue.opacity(0.8))
-                }
-            } else {
-                Text("Waiting")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+        HStack(spacing: 0) {
+
+            Text("OPD – \(token)")
+                .font(.subheadline)
+                .fontWeight(isCurrent || isYours ? .semibold : .regular)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            statusBadge
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(isYours ? Color.blue.opacity(0.08) : Color(.systemBackground))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(isYours ? Color.blue.opacity(0.4) : Color.clear, lineWidth: 1.5)
-        )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .background(isYours ? Color.blue.opacity(0.05) : Color.clear)
+    }
+
+    @ViewBuilder
+    private var statusBadge: some View {
+
+        if isCurrent {
+
+            Text("Serving")
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.green)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .background(Capsule().fill(Color.green.opacity(0.12)))
+
+        } else if isNext {
+
+            Text("Next")
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .background(Capsule().fill(Color(.secondarySystemBackground)))
+
+        } else if isYours {
+
+            Text("Your Token")
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.blue)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .background(Capsule().fill(Color.blue.opacity(0.1)))
+
+        } else {
+
+            Text("Waiting")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 
