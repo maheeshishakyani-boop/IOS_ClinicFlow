@@ -1,39 +1,18 @@
+//
+//  DigitalClinicBookView.swift
+//  ClinicApp
+//
+//  Created by BSCComp-046 on 2026-03-13.
+//
 
-
+//
+//  DigitalClinicBookView.swift
+//  ClinicApp
+//
+//  Created by YourName on 2026-03-13.
+//
 
 import SwiftUI
-
-// MARK: - Models
-
-struct VisitRecord: Identifiable {
-    let id = UUID()
-    let day: String
-    let month: String
-    let doctorName: String
-    let department: String
-    let diagnosis: String
-    let vitals: Vitals?
-    let prescriptions: [String]
-    let labInvestigations: [String]
-    var isExpanded: Bool = false
-}
-
-struct Vitals {
-    let bp: String
-    let hr: String
-    let temp: String
-    let spo2: String
-}
-
-// MARK: - DigitalClinicBookView
-//
-// Design decisions:
-//  • No NavigationStack — the caller (tab or HomeView's nav stack) provides it.
-//  • .navigationBarTitleDisplayMode(.inline) keeps "Digital Clinic Book" pinned
-//    in the nav bar at every scroll position (never collapses into a large title).
-//  • When pushed via NavigationLink from HomeView the system automatically hides
-//    the tab bar — no extra modifier needed.
-//  • When presented as a tab root it stays inside the tab bar container.
 
 struct DigitalClinicBookView: View {
     @State private var searchText = ""
@@ -52,7 +31,6 @@ struct DigitalClinicBookView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-
                 // Live Queue Status Banner
                 LiveQueueBanner()
 
@@ -120,14 +98,11 @@ struct DigitalClinicBookView: View {
 }
 
 // MARK: - Live Queue Banner
-
 struct LiveQueueBanner: View {
     var body: some View {
         VStack(spacing: 0) {
-            // Header row
             HStack {
                 HStack(spacing: 6) {
-                    // Pulsing green dot
                     Circle()
                         .fill(Color.green)
                         .frame(width: 8, height: 8)
@@ -156,7 +131,6 @@ struct LiveQueueBanner: View {
             Divider()
                 .padding(.horizontal, 16)
 
-            // Token numbers
             HStack(spacing: 0) {
                 VStack(spacing: 4) {
                     Text("Current Number")
@@ -193,11 +167,9 @@ struct LiveQueueBanner: View {
 }
 
 // MARK: - Next Appointment Card
-
 struct NextAppointmentCard: View {
     var body: some View {
         HStack(spacing: 14) {
-            // Left green accent bar
             RoundedRectangle(cornerRadius: 3)
                 .fill(Color.green)
                 .frame(width: 4)
@@ -244,16 +216,13 @@ struct NextAppointmentCard: View {
 }
 
 // MARK: - Visit Record Card
-
 struct VisitRecordCard: View {
     @Binding var record: VisitRecord
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-
-            // ── Header ──────────────────────────────────────────────────────
+            // Header
             HStack(alignment: .center, spacing: 14) {
-                // Date badge
                 VStack(spacing: 2) {
                     Text(record.day)
                         .font(.system(size: 20, weight: .bold))
@@ -281,7 +250,6 @@ struct VisitRecordCard: View {
 
                 Spacer()
 
-                // Download — arrow.down.circle is a standard iOS SF Symbol
                 Button {} label: {
                     Image(systemName: "arrow.down.circle")
                         .font(.system(size: 22, weight: .light))
@@ -292,13 +260,12 @@ struct VisitRecordCard: View {
             .padding(.top, 16)
             .padding(.bottom, 12)
 
-            // ── Expanded detail ─────────────────────────────────────────────
+            // Expanded detail
             if record.isExpanded {
                 Divider()
                     .padding(.horizontal, 16)
 
                 VStack(alignment: .leading, spacing: 16) {
-
                     // Diagnosis banner
                     HStack(spacing: 6) {
                         Text("DIAGNOSIS:")
@@ -376,8 +343,6 @@ struct VisitRecordCard: View {
                                 .foregroundStyle(.secondary)
                                 .kerning(0.5)
 
-                            // Wrap chips — FlowLayout not available pre-iOS 16.4,
-                            // so use a simple HStack with wrapping via ViewThatFits fallback
                             HStack(spacing: 8) {
                                 ForEach(record.labInvestigations, id: \.self) { item in
                                     Text(item)
@@ -422,7 +387,7 @@ struct VisitRecordCard: View {
                 .padding(.bottom, 16)
 
             } else {
-                // ── Collapsed row ──────────────────────────────────────────
+                // Collapsed row
                 Divider()
                     .padding(.horizontal, 16)
 
@@ -467,7 +432,6 @@ struct VisitRecordCard: View {
 }
 
 // MARK: - Vital Item
-
 struct VitalItem: View {
     let label: String
     let value: String
@@ -493,44 +457,6 @@ struct VitalItem: View {
         .frame(maxWidth: .infinity)
     }
 }
-
-// MARK: - Sample Data
-
-let sampleVisitRecords: [VisitRecord] = [
-    VisitRecord(
-        day: "14",
-        month: "OCT",
-        doctorName: "Dr. Sarah Jenkins",
-        department: "General Medicine",
-        diagnosis: "Acute Bronchitis",
-        vitals: Vitals(bp: "120/80", hr: "78", temp: "99.1", spo2: "98"),
-        prescriptions: ["Amoxicillin 500mg", "Cough Syrup"],
-        labInvestigations: ["Chest X-Ray", "CBC Panel"],
-        isExpanded: true
-    ),
-    VisitRecord(
-        day: "02",
-        month: "SEP",
-        doctorName: "Dr. Michael Chen",
-        department: "Cardiology",
-        diagnosis: "Routine Follow-up",
-        vitals: Vitals(bp: "118/76", hr: "72", temp: "98.6", spo2: "99"),
-        prescriptions: ["Aspirin 75mg"],
-        labInvestigations: ["ECG", "Lipid Panel"],
-        isExpanded: false
-    ),
-    VisitRecord(
-        day: "15",
-        month: "JUN",
-        doctorName: "Dr. Sarah Jenkins",
-        department: "General Medicine",
-        diagnosis: "Annual Wellness Check",
-        vitals: Vitals(bp: "116/74", hr: "70", temp: "98.4", spo2: "99"),
-        prescriptions: [],
-        labInvestigations: ["Blood Work", "Urinalysis"],
-        isExpanded: false
-    )
-]
 
 #Preview {
     NavigationStack {

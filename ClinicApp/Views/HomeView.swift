@@ -11,7 +11,7 @@ struct HomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
 
-                    // ── Welcome Header ───────────────────────────────────────
+                    // Welcome Header
                     HStack(alignment: .center) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Welcome back,")
@@ -26,7 +26,6 @@ struct HomeView: View {
                         Spacer()
 
                         HStack(spacing: 12) {
-                            // Bell — NavigationLink so system provides "< Back"
                             NavigationLink(destination: NotificationsView()) {
                                 ZStack(alignment: .topTrailing) {
                                     Image(systemName: "bell")
@@ -46,7 +45,6 @@ struct HomeView: View {
                             }
                             .buttonStyle(.plain)
 
-                            // Profile avatar
                             Button { showingProfile.toggle() } label: {
                                 Circle()
                                     .fill(
@@ -66,85 +64,71 @@ struct HomeView: View {
                             }
                         }
                     }
-                    // No extra top padding — content starts right under status bar
-                    // via the ScrollView's safeAreaInset, giving a full-bleed native feel
 
-                    // ── Live Queue ────────────────────────────────────────────
-                    VStack(alignment: .leading, spacing: 16) {
+                    // Live Queue Section
+                    VStack(spacing: 0) {
                         HStack {
-                            Label("Live Queue", systemImage: "person.3.sequence.fill")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.primary)
+                            HStack(spacing: 6) {
+                                Circle()
+                                    .fill(Color.green)
+                                    .frame(width: 8, height: 8)
+                                    .overlay(
+                                        Circle().stroke(Color.green.opacity(0.35), lineWidth: 3)
+                                    )
+                                Text("Live Queue Status")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.primary)
+                            }
                             Spacer()
-                            Text("Updated just now")
+                            Text("Dept: OPD")
                                 .font(.caption)
+                                .fontWeight(.medium)
                                 .foregroundStyle(.secondary)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(Capsule().fill(Color(.secondarySystemBackground)))
                         }
+                        .padding(.horizontal, 16)
+                        .padding(.top, 14)
+                        .padding(.bottom, 12)
+
+                        Divider().padding(.horizontal, 16)
 
                         HStack(spacing: 0) {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("Current token")
-                                    .font(.subheadline)
+                            VStack(spacing: 4) {
+                                Text("Current Number")
+                                    .font(.caption)
                                     .foregroundStyle(.secondary)
-                                HStack(alignment: .firstTextBaseline, spacing: 6) {
-                                    Text("45")
-                                        .font(.system(size: 40, weight: .bold))
-                                        .foregroundStyle(.blue)
-                                    Text("General Medicine")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
+                                Text("45")
+                                    .font(.system(size: 34, weight: .bold))
+                                    .foregroundStyle(.primary)
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity)
 
                             Rectangle()
                                 .fill(Color(.separator))
-                                .frame(width: 1, height: 52)
-                                .padding(.horizontal, 16)
+                                .frame(width: 1, height: 48)
 
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("Your token")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                                HStack(alignment: .firstTextBaseline, spacing: 6) {
-                                    Text("55")
-                                        .font(.system(size: 40, weight: .bold))
-                                        .foregroundStyle(.green)
-                                    Text("10 ahead")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding(.vertical, 4)
-
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack {
-                                Text("Estimated wait time")
+                            VStack(spacing: 4) {
+                                Text("Your Number")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
-                                Spacer()
-                                Text("~15 minutes")
-                                    .font(.caption)
-                                    .fontWeight(.medium)
+                                Text("55")
+                                    .font(.system(size: 34, weight: .bold))
                                     .foregroundStyle(.blue)
                             }
-                            ProgressView(value: 0.45, total: 1.0)
-                                .tint(.blue)
-                                .background(Color.gray.opacity(0.1))
-                                .clipShape(Capsule())
+                            .frame(maxWidth: .infinity)
                         }
+                        .padding(.vertical, 14)
                     }
-                    .padding(20)
                     .background(
-                        RoundedRectangle(cornerRadius: 20)
+                        RoundedRectangle(cornerRadius: 16)
                             .fill(Color(.systemBackground))
-                            .shadow(color: .black.opacity(0.05), radius: 15, y: 5)
+                            .shadow(color: .black.opacity(0.05), radius: 10, y: 3)
                     )
 
-                    // ── Upcoming Appointment ──────────────────────────────────
+                    // Upcoming Appointment
                     VStack(alignment: .leading, spacing: 16) {
                         HStack {
                             Label("Upcoming Appointment", systemImage: "calendar")
@@ -174,10 +158,10 @@ struct HomeView: View {
                             }
 
                             HStack(spacing: 20) {
-                                Label("22 Mar 2026", systemImage: "calendar")
+                                Label("22 Jun 2026", systemImage: "calendar")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
-                                Label("9:00 AM", systemImage: "clock")
+                                Label("9:00 AM – 5:00 PM", systemImage: "clock")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }
@@ -209,7 +193,7 @@ struct HomeView: View {
                             .shadow(color: .black.opacity(0.05), radius: 15, y: 5)
                     )
 
-                    // ── My Services ───────────────────────────────────────────
+                    // My Services
                     VStack(alignment: .leading, spacing: 16) {
                         Text("My Services")
                             .font(.headline)
@@ -220,7 +204,6 @@ struct HomeView: View {
                             GridItem(.flexible(), spacing: 16),
                             GridItem(.flexible(), spacing: 16)
                         ], spacing: 16) {
-
                             NavigationLink(destination: TrackMyQueueView()) {
                                 ServiceCard(icon: "person.3.sequence.fill", title: "Track My Queue", color: .blue)
                             }
@@ -248,7 +231,6 @@ struct HomeView: View {
                 .padding(.bottom, 32)
             }
             .background(Color(.systemGroupedBackground))
-            // Hide the navigation bar entirely — the custom header acts as the "nav bar"
             .navigationBarHidden(true)
         }
         .sheet(isPresented: $showingProfile) {
@@ -257,44 +239,82 @@ struct HomeView: View {
     }
 }
 
-// MARK: - ServiceCard
+// MARK: - CheckInView
+struct CheckInView: View {
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                VStack(spacing: 6) {
+                    Text("Your Token Number")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.blue)
+                    Text("OPD – 45")
+                        .font(.system(size: 48, weight: .bold))
+                        .foregroundStyle(.blue)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 32)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.blue.opacity(0.08))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.blue.opacity(0.15), lineWidth: 1)
+                        )
+                )
 
-struct ServiceCard: View {
+                TokenCard(icon: "person.2",    label: "Current Token Going",      value: "OPD – 21")
+                TokenCard(icon: "timer",        label: "Average Time per Patient", value: "15 Minutes")
+                TokenCard(icon: "clock",        label: "Estimated Consultation",   value: "10:35 AM")
+                TokenCard(icon: "hourglass",    label: "Remaining Waiting Time",   value: "2 hrs 15 min", highlight: true)
+                TokenCard(icon: "calendar",     label: "Today's OPD Session",      value: "9:00 AM – 5:00 PM")
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 40)
+        }
+        .background(Color(.systemGroupedBackground))
+        .navigationTitle("Token Status")
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+// MARK: - TokenCard
+struct TokenCard: View {
     let icon: String
-    let title: String
-    let color: Color
+    let label: String
+    let value: String
+    var highlight: Bool = false
 
     var body: some View {
-        VStack(spacing: 14) {
-            Circle()
-                .fill(color.opacity(0.12))
-                .frame(width: 60, height: 60)
-                .overlay(
-                    Image(systemName: icon)
-                        .font(.system(size: 26, weight: .medium))
-                        .foregroundStyle(color)
-                )
-            Text(title)
-                .font(.callout)
+        HStack(spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .regular))
+                .foregroundStyle(.secondary)
+                .frame(width: 20)
+
+            Text(label)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(value)
+                .font(.subheadline)
                 .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.primary)
-                .lineLimit(2)
+                .foregroundStyle(highlight ? Color.green : Color.primary)
+                .multilineTextAlignment(.trailing)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 24)
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 18)
         .background(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 16)
                 .fill(Color(.systemBackground))
-                .shadow(color: .black.opacity(0.04), radius: 12, y: 4)
+                .shadow(color: .black.opacity(0.05), radius: 10, y: 3)
         )
     }
 }
 
-// ProfileView is defined in ProfileView.swift
-
 #Preview {
     HomeView()
 }
-
