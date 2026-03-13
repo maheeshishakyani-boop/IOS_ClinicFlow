@@ -289,3 +289,4 @@ struct NotificationCard: View {
         NotificationsView()
     }
 }
+

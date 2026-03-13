@@ -337,3 +337,4 @@ struct NotificationSettingsView: View {
 #Preview {
     ProfileView()
 }
+
